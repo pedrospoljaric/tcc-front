@@ -1,109 +1,65 @@
-import { Button, TextField } from '@material-ui/core'
-import ClassCard from 'components/ClassCard'
-import { prop } from 'lodash/fp'
-import { useEffect, useState } from 'react'
+import Button from '@material-ui/core/Button'
+import { TextField } from '@material-ui/core'
 import request from 'utils/request'
+import { prop } from 'lodash/fp'
+import { useRouter } from 'next/dist/client/router'
+import { useState } from 'react'
 
-export default function Home() {
-    const [file, setFile] = useState(null)
-    const [classes, setClasses] = useState([])
-    const [disciplines, setDisciplines] = useState([])
-    const [meetingTimes, setMeetingTimes] = useState([])
-    const [semesterName, setSemesterName] = useState('')
+const Login = () => {
+    const router = useRouter()
 
-    useEffect(async () => {
-        if (file) {
-            const formData = new FormData()
-            formData.append('file', file)
-            const result = await request.post('/grids/import', formData, {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            })
-            const newClasses = prop('data.classes', result) || []
-            setClasses(newClasses.map((newClass, index) => ({ ...newClass, customId: index })))
-        }
-    }, [file])
-
-    useEffect(async () => {
-        const responseDisciplines = await request.get('/disciplines')
-        setDisciplines(prop('data.disciplines', responseDisciplines))
-
-        const responseMeetingTimes = await request.get('/meeting-times')
-        setMeetingTimes(prop('data.meetingTimes', responseMeetingTimes))
-    }, [])
+    const [loading, setLoading] = useState(false)
 
     return (
-        <>
+        <div style={{ margin: 'auto', textAlign: 'center', width: 300 }}>
             <form
                 onSubmit={async (event) => {
                     event.preventDefault()
 
-                    const newClasses = classes.map((classInfo) => ({
-                        name: prop(`target[name_${classInfo.customId}].value`, event),
-                        disciplineId: Number(prop(`target[disciplineId_${classInfo.customId}].value`, event)),
-                        meetingTimeId: Number(prop(`target[meetingTimeId_${classInfo.customId}].value`, event))
-                    }))
+                    setLoading(true)
 
-                    await request.post('/classes', {
-                        semesterName,
-                        classes: newClasses
-                    })
+                    const username = prop('target.username.value', event)
+                    const password = prop('target.password.value', event)
+                    try {
+                        const response = await request.post('/authentication', { username, password })
 
-                    setClasses([])
-                    setFile(null)
+                        request.defaults.headers.common.Authorization = `Bearer ${prop('data.token', response)}`
+
+                        localStorage.setItem('username', username)
+
+                        router.push('/inicio')
+                    } catch (err) {
+                        // eslint-disable-next-line no-alert
+                        alert(err)
+                    }
+                    setLoading(false)
                 }}
             >
-                <div style={{ margin: 'auto', textAlign: 'center', width: 300 }}>
-                    <input
-                        type="file"
-                        onChange={(event) => { setFile(prop('target.files.0', event)) }}
-                    />
-                    <TextField
-                        label="Semestre"
-                        size="small"
-                        variant="outlined"
-                        value={semesterName}
-                        onChange={(event) => { setSemesterName(event.target.value) }}
-                    />
-                    <Button variant="contained" color="primary" type="submit">Cadastrar</Button>
-                </div>
-                <div>
-                    {/* <pre>{JSON.stringify(classes, null, 2)}</pre> */}
-                </div>
-                <div style={{ display: 'flex' }}>
-                    <div>
-                        <div style={{ textAlign: 'center' }}>Segunda</div>
-                        <div style={{ height: 800, overflowY: 'scroll' }}>
-                            {classes.filter((classInfo) => prop('meetingTime.dayOfTheWeek', classInfo) === 1).map((classInfo) => <ClassCard disciplines={disciplines} meetingTimes={meetingTimes} classInfo={classInfo} />)}
-                        </div>
-                    </div>
-                    <div>
-                        <div style={{ textAlign: 'center' }}>Terça</div>
-                        <div style={{ height: 800, overflowY: 'scroll' }}>
-                            {classes.filter((classInfo) => prop('meetingTime.dayOfTheWeek', classInfo) === 2).map((classInfo) => <ClassCard disciplines={disciplines} meetingTimes={meetingTimes} classInfo={classInfo} />)}
-                        </div>
-                    </div>
-                    <div>
-                        <div style={{ textAlign: 'center' }}>Quarta</div>
-                        <div style={{ height: 800, overflowY: 'scroll' }}>
-                            {classes.filter((classInfo) => prop('meetingTime.dayOfTheWeek', classInfo) === 3).map((classInfo) => <ClassCard disciplines={disciplines} meetingTimes={meetingTimes} classInfo={classInfo} />)}
-                        </div>
-                    </div>
-                    <div>
-                        <div style={{ textAlign: 'center' }}>Quinta</div>
-                        <div style={{ height: 800, overflowY: 'scroll' }}>
-                            {classes.filter((classInfo) => prop('meetingTime.dayOfTheWeek', classInfo) === 4).map((classInfo) => <ClassCard disciplines={disciplines} meetingTimes={meetingTimes} classInfo={classInfo} />)}
-                        </div>
-                    </div>
-                    <div>
-                        <div style={{ textAlign: 'center' }}>Sexta</div>
-                        <div style={{ height: 800, overflowY: 'scroll' }}>
-                            {classes.filter((classInfo) => prop('meetingTime.dayOfTheWeek', classInfo) === 5).map((classInfo) => <ClassCard disciplines={disciplines} meetingTimes={meetingTimes} classInfo={classInfo} />)}
-                        </div>
-                    </div>
-                </div>
+                <TextField
+                    id="username"
+                    label="Usuário"
+                    variant="outlined"
+                    size="small"
+                    style={{
+                        width: '100%',
+                        marginBottom: 20
+                    }}
+                />
+                <TextField
+                    id="password"
+                    label="Senha"
+                    type="password"
+                    variant="outlined"
+                    size="small"
+                    style={{
+                        width: '100%',
+                        marginBottom: 20
+                    }}
+                />
+                <Button variant="contained" color="primary" type="submit">{loading ? 'Entrando...' : 'Entrar'}</Button>
             </form>
-        </>
+        </div>
     )
 }
+
+export default Login
