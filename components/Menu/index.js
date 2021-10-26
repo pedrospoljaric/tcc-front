@@ -1,7 +1,7 @@
 import MenuItem from './MenuItem'
 import MenuHeader from './MenuHeader'
 
-const Menu = ({ selected }) => (
+const Menu = () => (
     <>
         <MenuHeader />
         <MenuItem>Meno0</MenuItem>

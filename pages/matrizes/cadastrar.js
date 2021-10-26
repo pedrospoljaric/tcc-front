@@ -51,8 +51,6 @@ export default function Home() {
                         teachersIds: split(',', prop(`target[teachersIds_${classInfo.customId}].value`, event)).map(Number)
                     }))
 
-                    console.log(newClasses)
-
                     await request.post('/classes', {
                         year,
                         half,
