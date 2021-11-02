@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { Button, Input } from '@material-ui/core'
+import Template from 'components/Template'
 import { prop } from 'lodash/fp'
 import { useEffect, useState } from 'react'
 import request from 'utils/request'
@@ -22,7 +23,7 @@ const Inicio = () => {
     }, [file])
 
     return (
-        <>
+        <Template>
             <label htmlFor="contained-button-file">
                 <Input
                     id="contained-button-file"
@@ -35,7 +36,7 @@ const Inicio = () => {
                 </Button>
             </label>
             <pre>{JSON.stringify(classes, null, 2)}</pre>
-        </>
+        </Template>
     )
 }
 

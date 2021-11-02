@@ -4,6 +4,8 @@ import request from 'utils/request'
 import { prop } from 'lodash/fp'
 import { useRouter } from 'next/dist/client/router'
 import { useState } from 'react'
+import Image from 'next/image'
+import logo from 'public/logo_unifesp.png'
 
 const Login = () => {
     const router = useRouter()
@@ -11,7 +13,11 @@ const Login = () => {
     const [loading, setLoading] = useState(false)
 
     return (
-        <div style={{ margin: 'auto', textAlign: 'center', width: 300 }}>
+        <div style={{
+            margin: 'auto', textAlign: 'center', width: 360, backgroundColor: 'white', padding: 40, borderRadius: 20, border: '1px solid lightgray'
+        }}
+        >
+            <div style={{ width: '100%', padding: 20 }}><Image alt="BID Gerenciamento" src={logo} /></div>
             <form
                 onSubmit={async (event) => {
                     event.preventDefault()
@@ -27,7 +33,7 @@ const Login = () => {
 
                         localStorage.setItem('username', username)
 
-                        router.push('/inicio')
+                        router.push('/grade')
                     } catch (err) {
                         // eslint-disable-next-line no-alert
                         alert(err)

@@ -1,66 +1,60 @@
-import Menu from 'components/Menu'
+import Head from 'next/head'
 import styled from 'styled-components'
-import { ChevronLeft, ChevronRight } from '@material-ui/icons'
-import { useState } from 'react'
-import Button from '@material-ui/core/Button'
-
-const Sidebar = styled.div`
-    width: ${(props) => (props.visible ? '10%' : '24px')};
-    min-width: ${(props) => (props.visible ? '125px' : '0px')};
-    min-height: 100%;
-    background-color: white;
-    z-index: 1;
-    border-right: 1px solid rgba(59, 74, 122, 0.3);
-    transition: 0.3s;
-`
+import UserThumb from 'components/UserThumb'
+import Image from 'next/image'
+import logo from 'public/logo_unifesp_2.png'
+import MenuButton from './MenuButton'
 
 const InnerBox = styled.div`
     flex: 1;
+    max-width: 100vw;
+    display: flex;
+    flex-direction: column;
 `
 
 const TopBar = styled.div`
-    width: 100%;
-    height: 50px;
+    z-index: 1000;
+    min-width: 100%;
     background-color: white;
-    border-bottom: 1px solid rgba(59, 74, 122, 0.3);
+    border-bottom: 1px solid lightgray;
+    align-items: center;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
 `
 
 const Content = styled.div`
     padding: 10px;
-    margin: 15px;
+    margin: 5px;
     background-color: white;
-    border: 1px solid rgba(59, 74, 122, 0.3);
+    border: 1px solid lightgray;
+    min-height: 100%;
+    flex: 1;
+    position: relative;
 `
 
-const Template = ({ children, selected }) => {
-    const [menuVisible, setMenuVisible] = useState(true)
-
-    const hideMenu = (event) => {
-        event.preventDefault()
-        setMenuVisible(!menuVisible)
-    }
-
-    return (
-        <>
-            <div style={{
-                position: 'absolute', display: 'flex', minWidth: '100%', minHeight: '100%'
-            }}
-            >
-                <Sidebar visible={menuVisible}>
-                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                        <div style={{ flex: 1 }}>{menuVisible ? <Menu selected={selected} /> : ''}</div>
-                        <Button fullWidth style={{ justifyContent: 'flex-end', minWidth: 0, paddingRight: !menuVisible && 0 }} onClick={hideMenu}>{ menuVisible ? <ChevronLeft /> : <ChevronRight /> }</Button>
-                    </div>
-                </Sidebar>
-                <InnerBox>
-                    <TopBar />
-                    <Content>
-                        {children}
-                    </Content>
-                </InnerBox>
-            </div>
-        </>
-    )
-}
+const Template = ({ children, selected, title }) => (
+    <>
+        {title && <Head><title>{title}</title></Head>}
+        <div style={{
+            position: 'absolute', display: 'flex', minWidth: '100%', minHeight: '100%', flexDirection: 'column'
+        }}
+        >
+            <TopBar>
+                <div style={{ display: 'flex', flex: 1 }}>
+                    <MenuButton selected={selected === 'Grade'} goto="/grade">Grade</MenuButton>
+                    <MenuButton selected={selected === 'Matrizes'} goto="/matrizes/cadastrar">Matrizes</MenuButton>
+                </div>
+                <div style={{ maxWidth: 150 }}><Image src={logo} /></div>
+                <div style={{ flex: 1 }}><UserThumb /></div>
+            </TopBar>
+            <InnerBox>
+                <Content>
+                    {children}
+                </Content>
+            </InnerBox>
+        </div>
+    </>
+)
 
 export default Template
