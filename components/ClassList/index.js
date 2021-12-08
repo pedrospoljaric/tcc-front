@@ -1,26 +1,21 @@
 import { isEmpty, prop } from 'lodash/fp'
 import { useEffect, useState } from 'react'
 import ClassCard from 'components/ClassCard'
-import request from 'utils/request'
 import { InputAdornment, TextField } from '@material-ui/core'
 import { Search } from '@material-ui/icons'
 
 let filterDebouncer
 
-const ClassList = ({ semesterId }) => {
-    const [classes, setClasses] = useState([])
+const ClassList = ({ classes = [] }) => {
     const [shownClasses, setShownClasses] = useState([])
     const [filter, setFilter] = useState('')
 
     useEffect(async () => {
-        if (semesterId) {
-            const responseClasses = await request.get(`/semesters/${undefined}/classes`)
-            const newClasses = prop('data.classes', responseClasses)
-            setClasses(newClasses)
-            setShownClasses(newClasses)
+        if (classes) {
+            setShownClasses(classes)
             setFilter('')
         }
-    }, [semesterId])
+    }, [classes])
 
     useEffect(async () => {
         clearTimeout(filterDebouncer)
