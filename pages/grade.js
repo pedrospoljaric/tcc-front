@@ -1,5 +1,6 @@
 import Template from 'components/Template'
 import ClassList from 'components/ClassList'
+import ClassGrid from 'components/ClassGrid'
 import { TextField, MenuItem } from '@material-ui/core'
 import { useState, useEffect } from 'react'
 import request from 'utils/request'
@@ -100,7 +101,10 @@ const Grade = () => {
                 <MenuItem value={10}>10</MenuItem>
             </TextField>
             <ClassList classes={semesterClasses} />
-            <div style={{ marginLeft: 'calc(20% + 10px)' }}><ClassList classes={recommendedClasses} /></div>
+            {/* <div style={{ marginLeft: 'calc(20% + 10px)' }}><ClassList classes={recommendedClasses} /></div> */}
+            <div style={{ marginLeft: 'calc(20% + 10px)' }}>
+                <ClassGrid classes={recommendedClasses} />
+            </div>
         </Template>
     )
 }

@@ -21,14 +21,14 @@ const dayOfTheWeekName = {
     6: 'SAB'
 }
 
-const ClassCard = ({ classroom = {} }) => {
+const ClassCard = ({ classroom = {}, showMeetingTimes = true, showBorder = true }) => {
     const { discipline, teachers, meetingTimes } = classroom
 
     return (
         <div style={{
             display: 'flex',
             flexDirection: 'column',
-            border: '1px solid lightgray',
+            border: showBorder ? '1px solid lightgray' : '0px',
             padding: 5,
             borderRadius: 5,
             fontSize: '10pt',
@@ -52,7 +52,7 @@ const ClassCard = ({ classroom = {} }) => {
             {teachers && teachers.map((teacher) => (
                 <Tooltip key={prop('id', teacher)} enterDelay={500} disableFocusListener arrow placement="top" title={<div style={{ fontSize: 14, padding: 2 }}>{prop('name', teacher)}</div>}>
                     <div style={{
-                        maxWidth: '100%', marginBottom: 5, display: 'flex', alignItems: 'center'
+                        maxWidth: '100%', marginBottom: showMeetingTimes ? 5 : 0, display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', overflowX: 'hidden'
                     }}
                     >
                         <Person style={{ fill: 'rgba(33, 90, 54, 0.45)' }} />
@@ -61,7 +61,7 @@ const ClassCard = ({ classroom = {} }) => {
                 </Tooltip>
             ))}
             <div style={{ display: 'flex' }}>
-                {meetingTimes && meetingTimes.map((meetingTime, index) => (
+                {showMeetingTimes && meetingTimes && meetingTimes.map((meetingTime, index) => (
                     <Chip key={prop('id', meetingTime)} style={{ marginLeft: index !== 0 ? 5 : 0 }}>
                         {`${dayOfTheWeekName[prop('dayOfTheWeek', meetingTime)]} ${prop('startTime', meetingTime).slice(0, -3)}`}
                     </Chip>
