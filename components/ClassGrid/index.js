@@ -3,30 +3,23 @@ import { prop } from 'lodash/fp'
 
 const { default: styled } = require('styled-components')
 
-const DayHeader = styled.div`
-    width: 100%;
-    text-align: center;
-    border-bottom: 1px solid black;
-`
-const DayBox = styled.div`
-    width: 30%;
-    margin-right: 3%;
-`
-
 const MeetingTimeTag = styled.div`
-    min-width: 55px;
-    max-width: 55px;
-    text-align: right;
     padding: 5px;
-    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
 
-const ClassSlot = styled.div`
-    width: 100%;
+const Grid = styled.div`
+    display: grid;
+    grid-template-columns: 55px 1fr 55px 1fr 55px 1fr;
+    border-top: 1px solid black;
     border-left: 1px solid black;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-    display: flex;
+
+    > div {
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
+    }
 `
 
 const ClassItem = ({ dayOfTheWeek, startTime, classes = [] }) => {
@@ -40,7 +33,7 @@ const ClassItem = ({ dayOfTheWeek, startTime, classes = [] }) => {
     })
 
     return (
-        <div style={{ width: 'calc(100% - 55px)', borderLeft: '1px solid black', backgroundColor: slotClass ? 'rgba(33, 90, 54, 0.15)' : 'transparent' }}>
+        <div style={{ backgroundColor: slotClass ? 'rgba(33, 90, 54, 0.15)' : 'transparent' }}>
             {slotClass && <ClassCard classroom={slotClass} showMeetingTimes={false} showBorder={false} />}
         </div>
     )
@@ -48,9 +41,89 @@ const ClassItem = ({ dayOfTheWeek, startTime, classes = [] }) => {
 
 const ClassGrid = ({ classes }) => (
     <div>
-        <div style={{ display: 'flex' }}>
+        <Grid>
+            <div style={{ textAlign: 'center', gridColumnStart: 1, gridColumnEnd: 3 }}>Segunda</div>
+            <div style={{ textAlign: 'center', gridColumnStart: 3, gridColumnEnd: 5 }}>Quarta</div>
+            <div style={{ textAlign: 'center', gridColumnStart: 5, gridColumnEnd: 7 }}>Sexta</div>
+            <MeetingTimeTag>08h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={1} startTime="8:00:00" />
+            <MeetingTimeTag>08h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={3} startTime="8:00:00" />
+            <MeetingTimeTag>08h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={5} startTime="8:00:00" />
+            <MeetingTimeTag>10h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={1} startTime="10:00:00" />
+            <MeetingTimeTag>10h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={3} startTime="10:00:00" />
+            <MeetingTimeTag>10h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={5} startTime="10:00:00" />
+            <MeetingTimeTag>13h30</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={1} startTime="13:30:00" />
+            <MeetingTimeTag>13h30</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={3} startTime="13:30:00" />
+            <MeetingTimeTag>13h30</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={5} startTime="13:30:00" />
+            <MeetingTimeTag>15h30</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={1} startTime="15:30:00" />
+            <MeetingTimeTag>15h30</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={3} startTime="15:30:00" />
+            <MeetingTimeTag>15h30</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={5} startTime="15:30:00" />
+            <MeetingTimeTag>19h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={1} startTime="19:00:00" />
+            <MeetingTimeTag>19h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={3} startTime="19:00:00" />
+            <MeetingTimeTag>19h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={5} startTime="19:00:00" />
+            <MeetingTimeTag>21h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={1} startTime="21:00:00" />
+            <MeetingTimeTag>21h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={3} startTime="21:00:00" />
+            <MeetingTimeTag>21h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={5} startTime="21:00:00" />
+            <div style={{ textAlign: 'center', gridColumnStart: 1, gridColumnEnd: 3 }}>Terça</div>
+            <div style={{ textAlign: 'center', gridColumnStart: 3, gridColumnEnd: 5 }}>Quinta</div>
+            <div style={{ textAlign: 'center', gridColumnStart: 5, gridColumnEnd: 7 }}>Sábado</div>
+            <MeetingTimeTag>08h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={2} startTime="8:00:00" />
+            <MeetingTimeTag>08h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={4} startTime="8:00:00" />
+            <MeetingTimeTag>08h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={6} startTime="8:00:00" />
+            <MeetingTimeTag>10h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={2} startTime="10:00:00" />
+            <MeetingTimeTag>10h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={4} startTime="10:00:00" />
+            <MeetingTimeTag>10h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={6} startTime="10:00:00" />
+            <MeetingTimeTag>13h30</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={2} startTime="13:30:00" />
+            <MeetingTimeTag>13h30</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={4} startTime="13:30:00" />
+            <MeetingTimeTag>13h30</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={6} startTime="13:30:00" />
+            <MeetingTimeTag>15h30</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={2} startTime="15:30:00" />
+            <MeetingTimeTag>15h30</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={4} startTime="15:30:00" />
+            <MeetingTimeTag>15h30</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={6} startTime="15:30:00" />
+            <MeetingTimeTag>19h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={2} startTime="19:00:00" />
+            <MeetingTimeTag>19h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={4} startTime="19:00:00" />
+            <MeetingTimeTag>19h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={6} startTime="19:00:00" />
+            <MeetingTimeTag>21h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={2} startTime="21:00:00" />
+            <MeetingTimeTag>21h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={4} startTime="21:00:00" />
+            <MeetingTimeTag>21h00</MeetingTimeTag>
+            <ClassItem classes={classes} dayOfTheWeek={6} startTime="21:00:00" />
+        </Grid>
+        {/* <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <DayBox>
-                <DayHeader>Segunda</DayHeader>
+                <div>Segunda</div>
                 <ClassSlot>
                     <MeetingTimeTag>8h00</MeetingTimeTag>
                     <ClassItem classes={classes} dayOfTheWeek={1} startTime="8:00:00" />
@@ -61,7 +134,7 @@ const ClassGrid = ({ classes }) => (
                 </ClassSlot>
                 <ClassSlot>
                     <MeetingTimeTag>13h30</MeetingTimeTag>
-                    <ClassItem classes={classes} dayOfTheWeek={1} startTime="13:33:00" />
+                    <ClassItem classes={classes} dayOfTheWeek={1} startTime="13:30:00" />
                 </ClassSlot>
                 <ClassSlot>
                     <MeetingTimeTag>15h30</MeetingTimeTag>
@@ -77,7 +150,7 @@ const ClassGrid = ({ classes }) => (
                 </ClassSlot>
             </DayBox>
             <DayBox>
-                <DayHeader>Terça</DayHeader>
+                <div>Terça</div>
                 <ClassSlot>
                     <MeetingTimeTag>8h00</MeetingTimeTag>
                     <ClassItem classes={classes} dayOfTheWeek={2} startTime="8:00:00" />
@@ -104,7 +177,7 @@ const ClassGrid = ({ classes }) => (
                 </ClassSlot>
             </DayBox>
             <DayBox>
-                <DayHeader>Quarta</DayHeader>
+                <div>Quarta</div>
                 <ClassSlot>
                     <MeetingTimeTag>8h00</MeetingTimeTag>
                     <ClassItem classes={classes} dayOfTheWeek={3} startTime="8:00:00" />
@@ -131,9 +204,9 @@ const ClassGrid = ({ classes }) => (
                 </ClassSlot>
             </DayBox>
         </div>
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <DayBox>
-                <DayHeader>Quinta</DayHeader>
+                <div>Quinta</div>
                 <ClassSlot>
                     <MeetingTimeTag>8h00</MeetingTimeTag>
                     <ClassItem classes={classes} dayOfTheWeek={4} startTime="8:00:00" />
@@ -160,7 +233,7 @@ const ClassGrid = ({ classes }) => (
                 </ClassSlot>
             </DayBox>
             <DayBox>
-                <DayHeader>Sexta</DayHeader>
+                <div>Sexta</div>
                 <ClassSlot>
                     <MeetingTimeTag>8h00</MeetingTimeTag>
                     <ClassItem classes={classes} dayOfTheWeek={5} startTime="8:00:00" />
@@ -187,7 +260,7 @@ const ClassGrid = ({ classes }) => (
                 </ClassSlot>
             </DayBox>
             <DayBox>
-                <DayHeader>Sábado</DayHeader>
+                <div>Sábado</div>
                 <ClassSlot>
                     <MeetingTimeTag>8h00</MeetingTimeTag>
                     <ClassItem classes={classes} dayOfTheWeek={6} startTime="8:00:00" />
@@ -213,7 +286,7 @@ const ClassGrid = ({ classes }) => (
                     <ClassItem classes={classes} dayOfTheWeek={6} startTime="21:00:00" />
                 </ClassSlot>
             </DayBox>
-        </div>
+        </div> */}
     </div>
 )
 
