@@ -28,8 +28,10 @@ const Login = () => {
                     const password = prop('target.password.value', event)
                     try {
                         const response = await request.post('/authentication', { username, password })
+                        const token = prop('data.token', response)
 
-                        request.defaults.headers.common.Authorization = `Bearer ${prop('data.token', response)}`
+                        // request.defaults.headers.common.Authorization = `Bearer ${token}`
+                        localStorage.setItem('token', token)
 
                         localStorage.setItem('username', username)
 

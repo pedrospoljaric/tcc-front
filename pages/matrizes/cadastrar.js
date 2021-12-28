@@ -45,7 +45,7 @@ const MatrizesCadastrar = () => {
                 onSubmit={async (event) => {
                     event.preventDefault()
 
-                    const newClasses = classes.map((classInfo) => ({
+                    const newClasses = classes.filter((classInfo) => !!prop('name', classInfo)).map((classInfo) => ({
                         name: prop(`target[name_${classInfo.customId}].value`, event),
                         disciplineId: Number(prop(`target[disciplineId_${classInfo.customId}].value`, event)),
                         meetingTimeId: Number(prop(`target[meetingTimeId_${classInfo.customId}].value`, event)),
