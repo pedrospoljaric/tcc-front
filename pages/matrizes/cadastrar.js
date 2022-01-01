@@ -50,7 +50,7 @@ const MatrizesCadastrar = () => {
                         disciplineId: Number(prop(`target[disciplineId_${classInfo.customId}].value`, event)),
                         meetingTimeId: Number(prop(`target[meetingTimeId_${classInfo.customId}].value`, event)),
                         teachersIds: split(',', prop(`target[teachersIds_${classInfo.customId}].value`, event)).map(Number)
-                    })).filter((classInfo) => !!prop('name', classInfo))
+                    }))
 
                     await request.post('/classes', {
                         year,
@@ -94,7 +94,7 @@ const MatrizesCadastrar = () => {
                 <div>
                     {/* <pre>{JSON.stringify(classes, null, 2)}</pre> */}
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '20% 20% 20% 20% 20%' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '16.66% 16.66% 16.66% 16.66% 16.66% 16.66%' }}>
                     <div>
                         <div style={{ textAlign: 'center' }}>Segunda</div>
                         <div style={{
@@ -138,6 +138,15 @@ const MatrizesCadastrar = () => {
                         }}
                         >
                             {classes.filter((classInfo) => prop('meetingTime.dayOfTheWeek', classInfo) === 5).map((classInfo) => <CreateClassCard disciplines={disciplines} meetingTimes={meetingTimes} teachers={teachers} classInfo={classInfo} />)}
+                        </div>
+                    </div>
+                    <div>
+                        <div style={{ textAlign: 'center' }}>Sábado</div>
+                        <div style={{
+                            border: '1px solid lightgrey', height: 600, overflowY: 'scroll'
+                        }}
+                        >
+                            {classes.filter((classInfo) => prop('meetingTime.dayOfTheWeek', classInfo) === 6).map((classInfo) => <CreateClassCard disciplines={disciplines} meetingTimes={meetingTimes} teachers={teachers} classInfo={classInfo} />)}
                         </div>
                     </div>
                 </div>

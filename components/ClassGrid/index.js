@@ -1,7 +1,6 @@
 import ClassCard from 'components/ClassCard'
 import { prop } from 'lodash/fp'
-
-const { default: styled } = require('styled-components')
+import styled from 'styled-components'
 
 const MeetingTimeTag = styled.div`
     padding: 5px;
