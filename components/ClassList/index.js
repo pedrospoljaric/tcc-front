@@ -6,7 +6,7 @@ import { Search } from '@material-ui/icons'
 
 let filterDebouncer
 
-const ClassList = ({ classes = [] }) => {
+const ClassList = ({ classes = [], addClass }) => {
     const [shownClasses, setShownClasses] = useState([])
     const [filter, setFilter] = useState('')
 
@@ -51,7 +51,16 @@ const ClassList = ({ classes = [] }) => {
                 }}
             />
             <div style={{ overflowY: 'scroll' }}>
-                {shownClasses.map((classroom) => <div key={prop('id', classroom)} style={{ marginBottom: 2 }}><ClassCard classroom={classroom} /></div>)}
+                {shownClasses.map((classroom) => (
+                    <div key={prop('id', classroom)} style={{ marginBottom: 2 }}>
+                        <ClassCard
+                            classroom={classroom}
+                            onClick={() => {
+                                addClass(classroom)
+                            }}
+                        />
+                    </div>
+                ))}
             </div>
         </div>
     )

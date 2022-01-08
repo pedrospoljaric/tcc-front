@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import { prop } from 'lodash/fp'
 import styled from 'styled-components'
 import { Tooltip } from '@material-ui/core'
@@ -21,20 +23,25 @@ const dayOfTheWeekName = {
     6: 'SAB'
 }
 
-const ClassCard = ({ classroom = {}, showMeetingTimes = true, showBorder = true }) => {
+const ClassCard = ({
+    classroom = {}, showMeetingTimes = true, showBorder = true, onClick
+}) => {
     const { discipline, teachers, meetingTimes } = classroom
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            border: showBorder ? '1px solid lightgray' : '0px',
-            padding: 5,
-            borderRadius: 5,
-            fontSize: '10pt',
-            cursor: 'default',
-            alignItems: 'flex-start'
-        }}
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                border: showBorder ? '1px solid lightgray' : '0px',
+                padding: 5,
+                borderRadius: 5,
+                fontSize: '10pt',
+                cursor: 'default',
+                alignItems: 'flex-start'
+            }}
+            role="button"
+            onClick={onClick}
         >
             <Tooltip enterDelay={500} disableFocusListener arrow placement="top" title={<div style={{ fontSize: 14, padding: 2 }}>{`${prop('name', classroom)} - ${prop('name', discipline)}`}</div>}>
                 <div style={{
