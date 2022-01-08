@@ -28,7 +28,6 @@ const Grade = () => {
 
         const responseSelectedClasses = await request.get('/classes/selected')
         const selectedClassesGotten = prop('data.classes', responseSelectedClasses) || []
-        console.log(selectedClassesGotten)
         setSelectedClasses(selectedClassesGotten)
     }, [])
 
