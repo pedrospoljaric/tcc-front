@@ -6,14 +6,21 @@ import { TextField, MenuItem, Button } from '@material-ui/core'
 import { useState, useEffect } from 'react'
 import request from 'utils/request'
 import { prop } from 'lodash/fp'
+import { useRouter } from 'next/dist/client/router'
 
 const Grade = () => {
+    const router = useRouter()
     const [courses, setCourses] = useState([])
     const [selectedCourseId, setSelectedCourseId] = useState()
     const [semesterClasses, setSemesterClasses] = useState([])
     const [selectedClasses, setSelectedClasses] = useState([])
 
     useEffect(async () => {
+        const responseCheckSubmittedRecords = await request.get('/records/submitted')
+        const hasSubmittedRecords = prop('data.hasSubmittedRecords', responseCheckSubmittedRecords)
+
+        if (!hasSubmittedRecords) router.push('/historico')
+
         const responseCourses = await request.get('/courses')
         const coursesGotten = prop('data.courses', responseCourses) || []
         setCourses(coursesGotten)
@@ -32,7 +39,7 @@ const Grade = () => {
     }, [])
 
     return (
-        <Template selected="Grade">
+        <Template selected="Matriz">
             <ClassList
                 addClass={(classInfo) => {
                     const currentSelectedClasses = [...selectedClasses]
