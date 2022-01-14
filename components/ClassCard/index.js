@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import { prop } from 'lodash/fp'
 import styled from 'styled-components'
 import { Tooltip } from '@material-ui/core'
@@ -11,6 +13,21 @@ const Chip = styled.div`
     text-align: center;
 `
 
+const Card = styled.div`
+    display: flex;
+    flex-direction: column;
+    border:  ${(props) => (props.showBorder ? '1px solid lightgray' : '0px')};
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 10pt;
+    cursor: pointer;
+    align-items: flex-start;
+
+    &:hover {
+        background-color: lightgray;
+    }
+`
+
 const dayOfTheWeekName = {
     0: 'DOM',
     1: 'SEG',
@@ -21,20 +38,16 @@ const dayOfTheWeekName = {
     6: 'SAB'
 }
 
-const ClassCard = ({ classroom = {}, showMeetingTimes = true, showBorder = true }) => {
+const ClassCard = ({
+    classroom = {}, showMeetingTimes = true, showBorder = true, onClick
+}) => {
     const { discipline, teachers, meetingTimes } = classroom
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            border: showBorder ? '1px solid lightgray' : '0px',
-            padding: 5,
-            borderRadius: 5,
-            fontSize: '10pt',
-            cursor: 'default',
-            alignItems: 'flex-start'
-        }}
+        <Card
+            showBorder={showBorder}
+            role="button"
+            onClick={onClick}
         >
             <Tooltip enterDelay={500} disableFocusListener arrow placement="top" title={<div style={{ fontSize: 14, padding: 2 }}>{`${prop('name', classroom)} - ${prop('name', discipline)}`}</div>}>
                 <div style={{
@@ -67,7 +80,7 @@ const ClassCard = ({ classroom = {}, showMeetingTimes = true, showBorder = true 
                     </Chip>
                 ))}
             </div>
-        </div>
+        </Card>
     )
 }
 

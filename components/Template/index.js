@@ -43,8 +43,9 @@ const Template = ({ children, selected, title }) => (
             <TopBar>
                 <div style={{ display: 'flex', flex: 1 }}>
                     <MenuButton selected={selected === 'Preferencias'} goto="/preferencias">Preferências</MenuButton>
-                    <MenuButton selected={selected === 'Grade'} goto="/grade">Grade</MenuButton>
-                    <MenuButton selected={selected === 'Matrizes'} goto="/matrizes/cadastrar">Matrizes</MenuButton>
+                    <MenuButton selected={selected === 'Histórico'} goto="/historico">Histórico</MenuButton>
+                    <MenuButton selected={selected === 'Matriz'} goto="/matriz">Matriz</MenuButton>
+                    <MenuButton selected={selected === 'Amigos'} goto="/amigos">Amigos</MenuButton>
                 </div>
                 <div style={{ maxWidth: 150 }}><Image src={logo} /></div>
                 <div style={{ flex: 1 }}><UserThumb /></div>
