@@ -7,6 +7,9 @@ import { useState, useEffect } from 'react'
 import request from 'utils/request'
 import { prop } from 'lodash/fp'
 import { useRouter } from 'next/dist/client/router'
+import IconButton from '@material-ui/core/IconButton'
+import SettingsIcon from '@material-ui/icons/Settings'
+import Modal from 'components/Modal'
 
 const Grade = () => {
     const router = useRouter()
@@ -14,6 +17,11 @@ const Grade = () => {
     const [selectedCourseId, setSelectedCourseId] = useState()
     const [semesterClasses, setSemesterClasses] = useState([])
     const [selectedClasses, setSelectedClasses] = useState([])
+    const [showModal, setShowModal] = useState(false)
+
+    const openModal = () => {
+        setShowModal((prev) => !prev)
+    }
 
     useEffect(async () => {
         const responseCheckSubmittedRecords = await request.get('/records/submitted')
@@ -101,22 +109,32 @@ const Grade = () => {
                     >
                         Preencher com recomendações
                     </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={async (event) => {
-                            event.preventDefault()
-
-                            try {
-                                await request.post('/classes/selected', { classesIds: selectedClasses.map(prop('id')) })
-                                alert('Seleção salva com sucesso')
-                            } catch (err) {
-                                alert('Erro ao salvar seleção')
-                            }
-                        }}
+                    <div style={{
+                        display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                    }}
                     >
-                        Salvar
-                    </Button>
+                        <IconButton color="primary" onClick={openModal}>
+                            <SettingsIcon />
+                        </IconButton>
+                        <Modal showModal={showModal} setShowModal={setShowModal} />
+
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={async (event) => {
+                                event.preventDefault()
+
+                                try {
+                                    await request.post('/classes/selected', { classesIds: selectedClasses.map(prop('id')) })
+                                    alert('Seleção salva com sucesso')
+                                } catch (err) {
+                                    alert('Erro ao salvar seleção')
+                                }
+                            }}
+                        >
+                            Salvar
+                        </Button>
+                    </div>
                 </div>
                 <ClassGrid
                     classes={selectedClasses}

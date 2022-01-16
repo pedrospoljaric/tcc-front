@@ -73,8 +73,9 @@ const Preferencias = () => {
                     />
                 </form>
             </div>
+
             <div style={{
-                display: 'flex', textAlign: 'center', backgroundColor: 'white', padding: 5, alignItems: 'center', justifyContent: 'space-between'
+                backgroundColor: 'white', padding: 5
             }}
             />
 
@@ -82,12 +83,9 @@ const Preferencias = () => {
                 display: 'flex', textAlign: 'center', backgroundColor: 'white', padding: 40, borderRadius: 20, border: '1px solid lightgray', alignItems: 'center', justifyContent: 'space-between'
             }}
             />
+
             <div style={{
-                display: 'flex', textAlign: 'center', backgroundColor: 'white', padding: 5, alignItems: 'center', justifyContent: 'space-between'
-            }}
-            />
-            <div style={{
-                display: 'flex', textAlign: 'center', backgroundColor: 'white', padding: 5, alignItems: 'center', justifyContent: 'space-between'
+                backgroundColor: 'white', padding: 50
             }}
             >
                 <Button variant="contained" color="primary" type="submit">{loading ? 'Enviando...' : 'Enviar'}</Button>
