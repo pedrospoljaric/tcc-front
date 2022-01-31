@@ -12,11 +12,11 @@ const Modal = ({ showModal, setShowModal }) => {
     const [quiPosso, setQuiPosso] = useState(false)
     const [sexPosso, setSexPosso] = useState(false)
 
-    const [segPossoHorarios, setSegPossoHorarios] = useState(['manha', 'tarde', 'noite'])
-    const [terPossoHorarios, setTerPossoHorarios] = useState(['manha', 'tarde', 'noite'])
-    const [quaPossoHorarios, setQuaPossoHorarios] = useState(['manha', 'tarde', 'noite'])
-    const [quiPossoHorarios, setQuiPossoHorarios] = useState(['manha', 'tarde', 'noite'])
-    const [sexPossoHorarios, setSexPossoHorarios] = useState(['manha', 'tarde', 'noite'])
+    const [segPossoHorarios, setSegPossoHorarios] = useState([])
+    const [terPossoHorarios, setTerPossoHorarios] = useState([])
+    const [quaPossoHorarios, setQuaPossoHorarios] = useState([])
+    const [quiPossoHorarios, setQuiPossoHorarios] = useState([])
+    const [sexPossoHorarios, setSexPossoHorarios] = useState([])
 
     const [segPrefiro, setSegPrefiro] = useState(false)
     const [terPrefiro, setTerPrefiro] = useState(false)
@@ -65,11 +65,11 @@ const Modal = ({ showModal, setShowModal }) => {
         setQuiPosso(false)
         setSexPosso(false)
 
-        setSegPossoHorarios(['manha', 'tarde', 'noite'])
-        setTerPossoHorarios(['manha', 'tarde', 'noite'])
-        setQuaPossoHorarios(['manha', 'tarde', 'noite'])
-        setQuiPossoHorarios(['manha', 'tarde', 'noite'])
-        setSexPossoHorarios(['manha', 'tarde', 'noite'])
+        setSegPossoHorarios([])
+        setTerPossoHorarios([])
+        setQuaPossoHorarios([])
+        setQuiPossoHorarios([])
+        setSexPossoHorarios([])
 
         setSegPrefiro(false)
         setTerPrefiro(false)
