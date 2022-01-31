@@ -1,119 +1,47 @@
 /* eslint-disable no-alert */
 import {
-    TextField, MenuItem, Dialog, DialogTitle, DialogContent, DialogContentText, Button, DialogActions, FormControlLabel, Checkbox, Select, OutlinedInput
+    TextField, Dialog, DialogTitle, DialogContent, DialogContentText, Button, DialogActions
 } from '@material-ui/core'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import request from 'utils/request'
+import DaySelector from 'components/DaySelector'
+import { prop } from 'lodash/fp'
 
 const Modal = ({ showModal, setShowModal }) => {
-    const [segPosso, setSegPosso] = useState(false)
-    const [terPosso, setTerPosso] = useState(false)
-    const [quaPosso, setQuaPosso] = useState(false)
-    const [quiPosso, setQuiPosso] = useState(false)
-    const [sexPosso, setSexPosso] = useState(false)
+    const [selectedPeriodsMon, setSelectedPeriodsMon] = useState([])
+    const [selectedPeriodsTue, setSelectedPeriodsTue] = useState([])
+    const [selectedPeriodsWed, setSelectedPeriodsWed] = useState([])
+    const [selectedPeriodsThi, setSelectedPeriodsThi] = useState([])
+    const [selectedPeriodsFri, setSelectedPeriodsFri] = useState([])
+    const [selectedPeriodsSat, setSelectedPeriodsSat] = useState([])
 
-    const [segPossoHorarios, setSegPossoHorarios] = useState([])
-    const [terPossoHorarios, setTerPossoHorarios] = useState([])
-    const [quaPossoHorarios, setQuaPossoHorarios] = useState([])
-    const [quiPossoHorarios, setQuiPossoHorarios] = useState([])
-    const [sexPossoHorarios, setSexPossoHorarios] = useState([])
+    const [selectedPeriodsPrefMon, setSelectedPeriodsPrefMon] = useState([])
+    const [selectedPeriodsPrefTue, setSelectedPeriodsPrefTue] = useState([])
+    const [selectedPeriodsPrefWed, setSelectedPeriodsPrefWed] = useState([])
+    const [selectedPeriodsPrefThi, setSelectedPeriodsPrefThi] = useState([])
+    const [selectedPeriodsPrefFri, setSelectedPeriodsPrefFri] = useState([])
+    const [selectedPeriodsPrefSat, setSelectedPeriodsPrefSat] = useState([])
 
-    const [segPrefiro, setSegPrefiro] = useState(false)
-    const [terPrefiro, setTerPrefiro] = useState(false)
-    const [quaPrefiro, setQuaPrefiro] = useState(false)
-    const [quiPrefiro, setQuiPrefiro] = useState(false)
-    const [sexPrefiro, setSexPrefiro] = useState(false)
-
-    const [segPrefiroHorarios, setSegPrefiroHorarios] = useState([])
-    const [terPrefiroHorarios, setTerPrefiroHorarios] = useState([])
-    const [quaPrefiroHorarios, setQuaPrefiroHorarios] = useState([])
-    const [quiPrefiroHorarios, setQuiPrefiroHorarios] = useState([])
-    const [sexPrefiroHorarios, setSexPrefiroHorarios] = useState([])
-
-    const [qtdDisciplinas, setQtdDisciplinas] = useState(5)
-
-    const handleChangePosso = (event) => {
-        const {
-            target: { value, name }
-        } = event
-
-        const newValue = typeof value === 'string' ? value.split(',') : value
-        if (name === 'segunda') setSegPossoHorarios(newValue)
-        else if (name === 'terca') setTerPossoHorarios(newValue)
-        else if (name === 'quarta') setQuaPossoHorarios(newValue)
-        else if (name === 'quinta') setQuiPossoHorarios(newValue)
-        else if (name === 'sexta') setSexPossoHorarios(newValue)
-    }
-
-    const handleChangePrefiro = (event) => {
-        const {
-            target: { value, name }
-        } = event
-
-        const newValue = typeof value === 'string' ? value.split(',') : value
-        if (name === 'segunda') setSegPrefiroHorarios(newValue)
-        else if (name === 'terca') setTerPrefiroHorarios(newValue)
-        else if (name === 'quarta') setQuaPrefiroHorarios(newValue)
-        else if (name === 'quinta') setQuiPrefiroHorarios(newValue)
-        else if (name === 'sexta') setSexPrefiroHorarios(newValue)
-    }
-
-    const resetValues = () => {
-        setSegPosso(false)
-        setTerPosso(false)
-        setQuaPosso(false)
-        setQuiPosso(false)
-        setSexPosso(false)
-
-        setSegPossoHorarios([])
-        setTerPossoHorarios([])
-        setQuaPossoHorarios([])
-        setQuiPossoHorarios([])
-        setSexPossoHorarios([])
-
-        setSegPrefiro(false)
-        setTerPrefiro(false)
-        setQuaPrefiro(false)
-        setQuiPrefiro(false)
-        setSexPrefiro(false)
-
-        setSegPrefiroHorarios([])
-        setTerPrefiroHorarios([])
-        setQuaPrefiroHorarios([])
-        setQuiPrefiroHorarios([])
-        setSexPrefiroHorarios([])
-
-        setQtdDisciplinas(5)
-    }
+    const [maxDisciplineAmount, setMaxDisciplineAmount] = useState(5)
 
     const savePreferences = async () => {
-        const segCan = segPosso ? segPossoHorarios : []
-        const terCan = segPosso ? terPossoHorarios : []
-        const quaCan = segPosso ? quaPossoHorarios : []
-        const quiCan = segPosso ? quiPossoHorarios : []
-        const sexCan = segPosso ? sexPossoHorarios : []
-
-        const segPrefer = segPrefiro ? segPrefiroHorarios : []
-        const terPrefer = terPrefiro ? terPrefiroHorarios : []
-        const quaPrefer = quaPrefiro ? quaPrefiroHorarios : []
-        const quiPrefer = quiPrefiro ? quiPrefiroHorarios : []
-        const sexPrefer = sexPrefiro ? sexPrefiroHorarios : []
-
         const preferences = {
-            amount: qtdDisciplinas,
-            can: {
-                1: segCan,
-                2: terCan,
-                3: quaCan,
-                4: quiCan,
-                5: sexCan
+            amount: maxDisciplineAmount,
+            cant: {
+                1: selectedPeriodsMon,
+                2: selectedPeriodsTue,
+                3: selectedPeriodsWed,
+                4: selectedPeriodsThi,
+                5: selectedPeriodsFri,
+                6: selectedPeriodsSat
             },
             prefer: {
-                1: segPrefer,
-                2: terPrefer,
-                3: quaPrefer,
-                4: quiPrefer,
-                5: sexPrefer
+                1: selectedPeriodsPrefMon,
+                2: selectedPeriodsPrefTue,
+                3: selectedPeriodsPrefWed,
+                4: selectedPeriodsPrefThi,
+                5: selectedPeriodsPrefFri,
+                6: selectedPeriodsPrefSat
             }
         }
 
@@ -125,6 +53,29 @@ const Modal = ({ showModal, setShowModal }) => {
             alert('Erro ao salvar preferências')
         }
     }
+
+    useEffect(async () => {
+        if (showModal) {
+            const responsePreferences = await request.get('/preferences')
+            const userPreferences = prop('data.preferences', responsePreferences)
+
+            setSelectedPeriodsMon(prop('cant.1', userPreferences) || [])
+            setSelectedPeriodsTue(prop('cant.2', userPreferences) || [])
+            setSelectedPeriodsWed(prop('cant.3', userPreferences) || [])
+            setSelectedPeriodsThi(prop('cant.4', userPreferences) || [])
+            setSelectedPeriodsFri(prop('cant.5', userPreferences) || [])
+            setSelectedPeriodsSat(prop('cant.6', userPreferences) || [])
+
+            setSelectedPeriodsPrefMon(prop('prefer.1', userPreferences) || [])
+            setSelectedPeriodsPrefTue(prop('prefer.2', userPreferences) || [])
+            setSelectedPeriodsPrefWed(prop('prefer.3', userPreferences) || [])
+            setSelectedPeriodsPrefThi(prop('prefer.4', userPreferences) || [])
+            setSelectedPeriodsPrefFri(prop('prefer.5', userPreferences) || [])
+            setSelectedPeriodsPrefSat(prop('prefer.6', userPreferences) || [])
+
+            setMaxDisciplineAmount(prop('amount', userPreferences) || 5)
+        }
+    }, [showModal])
 
     return (
         <Dialog
@@ -139,473 +90,50 @@ const Modal = ({ showModal, setShowModal }) => {
                 <DialogContentText id="alert-dialog-description" style={{ marginBottom: '24px', fontSize: 15 }}>
                     A recomendação da matriz horária deve se basear nas escolhas a seguir:
                     <br />
-
-                    - Informe em &ldquo;Quantidade de Unidade Curriculares&rdquo;, o número máximo de disciplinas que deseja cursar;
+                    - Informe em &ldquo;Quantidade máxima de UCs&rdquo;, o número máximo de disciplinas que deseja cursar;
                     <br />
-
-                    - Selecione em &ldquo;Posso&rdquo;, todos os dias os quais você tem disponível para ter aulas, e o mesmo para seus respectivos turnos;
+                    - Selecione em &ldquo;Bloquear períodos&rdquo;, todos os dias e períodos nos quais você está indisponível para ter aulas;
                     <br />
-
-                    - Em &ldquo;Prefiro&rdquo;, selecione dias e turnos nos quais você prefere ter aulas, mas que podem ser realizadas em outras opções;
+                    - Em &ldquo;Dar preferência por períodos&rdquo;, selecione dias e períodos nos quais você prefere ter aulas, mas sem restrição de disponibilidade.
                 </DialogContentText>
                 <hr />
                 <br />
 
+                <div><b>Quantidade máxima de UCs</b></div>
                 <TextField
-                    label="Quantidade de UCs"
                     size="small"
                     variant="outlined"
-                    value={qtdDisciplinas}
-                    error={!qtdDisciplinas}
-                    onChange={(event) => { setQtdDisciplinas(event.target.value) }}
-                    style={{ width: 200, margin: 10 }}
+                    value={maxDisciplineAmount}
+                    error={!maxDisciplineAmount}
+                    onChange={(event) => { setMaxDisciplineAmount(event.target.value) }}
+                    style={{ marginTop: 16, marginBottom: 16 }}
                 />
                 <br />
                 <br />
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: '2fr 1fr 2fr'
-                }}
-                >
-                    <div style={{
-                        display: 'flex', flexDirection: 'column'
-                    }}
-                    >
-                        <div style={{ marginBottom: '16px' }}>Posso</div>
-                        <hr />
-                        <br />
-
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <FormControlLabel
-                                control={<Checkbox checked={segPosso} onChange={() => setSegPosso(!segPosso)} name="checkedA" />}
-                                label="Segunda"
-                            />
-                            {segPosso && (
-                                <Select
-                                    labelId="demo-multiple-name-label"
-                                    id="demo-multiple-name"
-                                    multiple
-                                    name="segunda"
-                                    value={segPossoHorarios}
-                                    onChange={handleChangePosso}
-                                    input={<OutlinedInput />}
-                                >
-                                    <MenuItem
-                                        value="manha"
-                                    >
-                                        Manhã
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="tarde"
-                                    >
-                                        Tarde
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="noite"
-                                    >
-                                        Noite
-                                    </MenuItem>
-                                </Select>
-                            )}
-                        </div>
-                        <br />
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <FormControlLabel
-                                control={<Checkbox checked={terPosso} onChange={() => setTerPosso(!terPosso)} name="checkedA" />}
-                                label="Terça"
-                            />
-                            {terPosso && (
-                                <Select
-                                    labelId="demo-multiple-name-label"
-                                    id="demo-multiple-name"
-                                    multiple
-                                    name="terca"
-                                    value={terPossoHorarios}
-                                    onChange={handleChangePosso}
-                                    input={<OutlinedInput />}
-                                >
-                                    <MenuItem
-                                        value="manha"
-                                    >
-                                        Manhã
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="tarde"
-                                    >
-                                        Tarde
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="noite"
-                                    >
-                                        Noite
-                                    </MenuItem>
-                                </Select>
-                            )}
-                        </div>
-                        <br />
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <FormControlLabel
-                                control={<Checkbox checked={quaPosso} onChange={() => setQuaPosso(!quaPosso)} name="checkedA" />}
-                                label="Quarta"
-                            />
-                            {quaPosso && (
-                                <Select
-                                    labelId="demo-multiple-name-label"
-                                    id="demo-multiple-name"
-                                    multiple
-                                    name="quarta"
-                                    value={quaPossoHorarios}
-                                    onChange={handleChangePosso}
-                                    input={<OutlinedInput />}
-                                >
-                                    <MenuItem
-                                        value="manha"
-                                    >
-                                        Manhã
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="tarde"
-                                    >
-                                        Tarde
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="noite"
-                                    >
-                                        Noite
-                                    </MenuItem>
-                                </Select>
-                            )}
-                        </div>
-                        <br />
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <FormControlLabel
-                                control={<Checkbox checked={quiPosso} onChange={() => setQuiPosso(!quiPosso)} name="checkedA" />}
-                                label="Quinta"
-                            />
-                            {quiPosso && (
-                                <Select
-                                    labelId="demo-multiple-name-label"
-                                    id="demo-multiple-name"
-                                    multiple
-                                    name="quinta"
-                                    value={quiPossoHorarios}
-                                    onChange={handleChangePosso}
-                                    input={<OutlinedInput />}
-                                >
-                                    <MenuItem
-                                        value="manha"
-                                    >
-                                        Manhã
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="tarde"
-                                    >
-                                        Tarde
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="noite"
-                                    >
-                                        Noite
-                                    </MenuItem>
-                                </Select>
-                            )}
-                        </div>
-                        <br />
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <FormControlLabel
-                                control={<Checkbox checked={sexPosso} onChange={() => setSexPosso(!sexPosso)} name="checkedA" />}
-                                label="Sexta"
-                            />
-                            {sexPosso && (
-                                <Select
-                                    labelId="demo-multiple-name-label"
-                                    id="demo-multiple-name"
-                                    multiple
-                                    name="sexta"
-                                    value={sexPossoHorarios}
-                                    onChange={handleChangePosso}
-                                    input={<OutlinedInput />}
-                                >
-                                    <MenuItem
-                                        value="manha"
-                                    >
-                                        Manhã
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="tarde"
-                                    >
-                                        Tarde
-                                    </MenuItem>
-                                    <MenuItem
-                                        value="noite"
-                                    >
-                                        Noite
-                                    </MenuItem>
-                                </Select>
-                            )}
-                        </div>
-                        <br />
-
+                <div style={{ display: 'flex', gap: 20 }}>
+                    <div style={{ flex: 1, borderRight: '1px solid black' }}>
+                        <div style={{ marginBottom: '16px' }}><b>Bloquear períodos</b></div>
+                        <DaySelector day="Segunda" selectedPeriods={selectedPeriodsMon} setSelectedPeriods={setSelectedPeriodsMon} />
+                        <DaySelector day="Terça" selectedPeriods={selectedPeriodsTue} setSelectedPeriods={setSelectedPeriodsTue} />
+                        <DaySelector day="Quarta" selectedPeriods={selectedPeriodsWed} setSelectedPeriods={setSelectedPeriodsWed} />
+                        <DaySelector day="Quinta" selectedPeriods={selectedPeriodsThi} setSelectedPeriods={setSelectedPeriodsThi} />
+                        <DaySelector day="Sexta" selectedPeriods={selectedPeriodsFri} setSelectedPeriods={setSelectedPeriodsFri} />
+                        <DaySelector day="Sábado" selectedPeriods={selectedPeriodsSat} setSelectedPeriods={setSelectedPeriodsSat} />
                     </div>
-                    <div style={{
-                        flexDirection: 'column'
-                    }}
-                    />
-
-                    <div style={{
-                        display: 'flex', flexDirection: 'column'
-                    }}
-                    >
-
-                        <div style={{ marginBottom: '16px' }}>Prefiro</div>
-                        <hr />
-                        <br />
-
-                        {segPosso && segPossoHorarios && !!segPossoHorarios.length && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={segPrefiro} onChange={() => setSegPrefiro(!segPrefiro)} name="checkedA" />}
-                                    label="Segunda"
-                                />
-                                {segPrefiro && (
-                                    <Select
-                                        labelId="demo-multiple-name-label"
-                                        id="demo-multiple-name"
-                                        multiple
-                                        name="segunda"
-                                        value={segPrefiroHorarios}
-                                        onChange={handleChangePrefiro}
-                                        input={<OutlinedInput />}
-                                    >
-                                        {segPossoHorarios && segPossoHorarios.indexOf('manha') !== -1 && (
-                                            <MenuItem
-                                                value="manha"
-                                            >
-                                                Manhã
-                                            </MenuItem>
-                                        )}
-                                        {segPossoHorarios && segPossoHorarios.indexOf('tarde') !== -1 && (
-                                            <MenuItem
-                                                value="tarde"
-                                            >
-                                                Tarde
-                                            </MenuItem>
-                                        )}
-                                        {segPossoHorarios && segPossoHorarios.indexOf('noite') !== -1 && (
-                                            <MenuItem
-                                                value="noite"
-                                            >
-                                                Noite
-                                            </MenuItem>
-                                        )}
-                                    </Select>
-                                )}
-                            </div>
-                        ) }
-                        <br />
-                        {terPosso && terPossoHorarios && !!terPossoHorarios.length && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={terPrefiro} onChange={() => setTerPrefiro(!terPrefiro)} name="checkedA" />}
-                                    label="Terça"
-                                />
-                                {terPrefiro && (
-                                    <Select
-                                        labelId="demo-multiple-name-label"
-                                        id="demo-multiple-name"
-                                        multiple
-                                        name="terca"
-                                        value={terPrefiroHorarios}
-                                        onChange={handleChangePrefiro}
-                                        input={<OutlinedInput />}
-                                    >
-                                        {terPossoHorarios && terPossoHorarios.indexOf('manha') !== -1 && (
-                                            <MenuItem
-                                                value="manha"
-                                            >
-                                                Manhã
-                                            </MenuItem>
-                                        )}
-                                        {terPossoHorarios && terPossoHorarios.indexOf('tarde') !== -1 && (
-                                            <MenuItem
-                                                value="tarde"
-                                            >
-                                                Tarde
-                                            </MenuItem>
-                                        )}
-                                        {terPossoHorarios && terPossoHorarios.indexOf('noite') !== -1 && (
-                                            <MenuItem
-                                                value="noite"
-                                            >
-                                                Noite
-                                            </MenuItem>
-                                        )}
-                                    </Select>
-                                )}
-                            </div>
-                        ) }
-                        <br />
-                        {quaPosso && quaPossoHorarios && !!quaPossoHorarios.length && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={quaPrefiro} onChange={() => setQuaPrefiro(!quaPrefiro)} name="checkedA" />}
-                                    label="Quarta"
-                                />
-                                {quaPrefiro && (
-                                    <Select
-                                        labelId="demo-multiple-name-label"
-                                        id="demo-multiple-name"
-                                        multiple
-                                        name="quarta"
-                                        value={quaPrefiroHorarios}
-                                        onChange={handleChangePrefiro}
-                                        input={<OutlinedInput />}
-                                    >
-                                        {quaPossoHorarios && quaPossoHorarios.indexOf('manha') !== -1 && (
-                                            <MenuItem
-                                                value="manha"
-                                            >
-                                                Manhã
-                                            </MenuItem>
-                                        )}
-                                        {quaPossoHorarios && quaPossoHorarios.indexOf('tarde') !== -1 && (
-                                            <MenuItem
-                                                value="tarde"
-                                            >
-                                                Tarde
-                                            </MenuItem>
-                                        )}
-                                        {quaPossoHorarios && quaPossoHorarios.indexOf('noite') !== -1 && (
-                                            <MenuItem
-                                                value="noite"
-                                            >
-                                                Noite
-                                            </MenuItem>
-                                        )}
-                                    </Select>
-                                )}
-                            </div>
-                        ) }
-                        <br />
-                        {quiPosso && quiPossoHorarios && !!quiPossoHorarios.length && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={quiPrefiro} onChange={() => setQuiPrefiro(!quiPrefiro)} name="checkedA" />}
-                                    label="Quinta"
-                                />
-                                {quiPrefiro && (
-                                    <Select
-                                        labelId="demo-multiple-name-label"
-                                        id="demo-multiple-name"
-                                        multiple
-                                        name="quinta"
-                                        value={quiPrefiroHorarios}
-                                        onChange={handleChangePrefiro}
-                                        input={<OutlinedInput />}
-                                    >
-                                        {quiPossoHorarios && quiPossoHorarios.indexOf('manha') !== -1 && (
-                                            <MenuItem
-                                                value="manha"
-                                            >
-                                                Manhã
-                                            </MenuItem>
-                                        )}
-                                        {quiPossoHorarios && quiPossoHorarios.indexOf('tarde') !== -1 && (
-                                            <MenuItem
-                                                value="tarde"
-                                            >
-                                                Tarde
-                                            </MenuItem>
-                                        )}
-                                        {quiPossoHorarios && quiPossoHorarios.indexOf('noite') !== -1 && (
-                                            <MenuItem
-                                                value="noite"
-                                            >
-                                                Noite
-                                            </MenuItem>
-                                        )}
-                                    </Select>
-                                )}
-                            </div>
-                        ) }
-                        <br />
-                        {sexPosso && sexPossoHorarios && !!sexPossoHorarios.length && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <FormControlLabel
-                                    control={<Checkbox checked={sexPrefiro} onChange={() => setSexPrefiro(!sexPrefiro)} name="checkedA" />}
-                                    label="Sexta"
-                                />
-                                {sexPrefiro && (
-                                    <Select
-                                        labelId="demo-multiple-name-label"
-                                        id="demo-multiple-name"
-                                        multiple
-                                        name="sexta"
-                                        value={sexPrefiroHorarios}
-                                        onChange={handleChangePrefiro}
-                                        input={<OutlinedInput />}
-                                    >
-                                        {sexPossoHorarios && sexPossoHorarios.indexOf('manha') !== -1 && (
-                                            <MenuItem
-                                                value="manha"
-                                            >
-                                                Manhã
-                                            </MenuItem>
-                                        )}
-                                        {sexPossoHorarios && sexPossoHorarios.indexOf('tarde') !== -1 && (
-                                            <MenuItem
-                                                value="tarde"
-                                            >
-                                                Tarde
-                                            </MenuItem>
-                                        )}
-                                        {sexPossoHorarios && sexPossoHorarios.indexOf('noite') !== -1 && (
-                                            <MenuItem
-                                                value="noite"
-                                            >
-                                                Noite
-                                            </MenuItem>
-                                        )}
-                                    </Select>
-                                )}
-                            </div>
-                        ) }
-                        <br />
+                    <div style={{ flex: 1 }}>
+                        <div style={{ marginBottom: '16px' }}><b>Dar preferência por períodos</b></div>
+                        <DaySelector day="Segunda" blockedPeriods={selectedPeriodsMon} selectedPeriods={selectedPeriodsPrefMon} setSelectedPeriods={setSelectedPeriodsPrefMon} />
+                        <DaySelector day="Terça" blockedPeriods={selectedPeriodsTue} selectedPeriods={selectedPeriodsPrefTue} setSelectedPeriods={setSelectedPeriodsPrefTue} />
+                        <DaySelector day="Quarta" blockedPeriods={selectedPeriodsWed} selectedPeriods={selectedPeriodsPrefWed} setSelectedPeriods={setSelectedPeriodsPrefWed} />
+                        <DaySelector day="Quinta" blockedPeriods={selectedPeriodsThi} selectedPeriods={selectedPeriodsPrefThi} setSelectedPeriods={setSelectedPeriodsPrefThi} />
+                        <DaySelector day="Sexta" blockedPeriods={selectedPeriodsFri} selectedPeriods={selectedPeriodsPrefFri} setSelectedPeriods={setSelectedPeriodsPrefFri} />
+                        <DaySelector day="Sábado" blockedPeriods={selectedPeriodsSat} selectedPeriods={selectedPeriodsPrefSat} setSelectedPeriods={setSelectedPeriodsPrefSat} />
                     </div>
                 </div>
-
             </DialogContent>
             <DialogActions>
-                <Button
-                    onClick={() => {
-                        setShowModal(false)
-                        resetValues()
-                    }}
-                    color="primary"
-                >
-                    Cancelar
-                </Button>
-
-                <Button
-                    onClick={() => {
-                        resetValues()
-                    }}
-                    color="primary"
-                >
-                    Limpar
-                </Button>
-
-                <Button
-                    onClick={() => {
-                        setShowModal(false)
-                        savePreferences()
-                    }}
-                    color="primary"
-                    autoFocus
-                >
-                    Confirmar
-                </Button>
-
+                <Button onClick={() => { setShowModal(false) }} color="primary">Cancelar</Button>
+                <Button onClick={() => { setShowModal(false); savePreferences() }} color="primary" autoFocus>Confirmar</Button>
             </DialogActions>
         </Dialog>
     )

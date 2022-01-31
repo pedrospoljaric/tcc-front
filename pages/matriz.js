@@ -18,6 +18,7 @@ const Grade = () => {
     const [semesterClasses, setSemesterClasses] = useState([])
     const [selectedClasses, setSelectedClasses] = useState([])
     const [showModal, setShowModal] = useState(false)
+    const [loadingRecommendation, setLoadingRecommendation] = useState(false)
 
     const openModal = () => {
         setShowModal((prev) => !prev)
@@ -92,11 +93,13 @@ const Grade = () => {
                     <Button
                         variant="contained"
                         color="primary"
-                        disabled={!selectedCourseId}
+                        disabled={!selectedCourseId || loadingRecommendation}
                         onClick={async (event) => {
                             event.preventDefault()
 
                             if (selectedCourseId) {
+                                setLoadingRecommendation(true)
+
                                 const responseClasses = await request.get('/recommendation', {
                                     params: {
                                         courseId: selectedCourseId
@@ -104,10 +107,12 @@ const Grade = () => {
                                 })
                                 const recommendedClasses = prop('data.classes', responseClasses)
                                 setSelectedClasses(recommendedClasses)
+
+                                setLoadingRecommendation(false)
                             }
                         }}
                     >
-                        Preencher com recomendações
+                        {loadingRecommendation ? 'Gerando recomendações...' : 'Preencher com recomendações'}
                     </Button>
                     <div style={{
                         display: 'flex', justifyContent: 'space-between', alignItems: 'center'
