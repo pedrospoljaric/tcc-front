@@ -1,8 +1,10 @@
 import { Avatar } from '@material-ui/core'
-import { KeyboardArrowDown } from '@material-ui/icons'
+import { ExitToApp } from '@material-ui/icons'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/dist/client/router'
 
 const UserThumb = () => {
+    const router = useRouter()
     const [username, setUsername] = useState('')
 
     useEffect(() => {
@@ -13,7 +15,12 @@ const UserThumb = () => {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
             {username}
             <div style={{ marginLeft: 5 }}><Avatar src="/logo_unifesp.png" /></div>
-            <KeyboardArrowDown />
+            <ExitToApp
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                    router.push('/')
+                }}
+            />
         </div>
     )
 }

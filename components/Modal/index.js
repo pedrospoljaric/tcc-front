@@ -85,16 +85,16 @@ const Modal = ({ showModal, setShowModal }) => {
             aria-describedby="alert-dialog-description"
             maxWidth="lg"
         >
-            <DialogTitle id="alert-dialog-title">Configurações - Datas e Turnos</DialogTitle>
+            <DialogTitle id="alert-dialog-title">Preferências</DialogTitle>
             <DialogContent style={{ width: '900px' }}>
                 <DialogContentText id="alert-dialog-description" style={{ marginBottom: '24px', fontSize: 15 }}>
                     A recomendação da matriz horária deve se basear nas escolhas a seguir:
                     <br />
                     - Informe em &ldquo;Quantidade máxima de UCs&rdquo;, o número máximo de disciplinas que deseja cursar;
                     <br />
-                    - Selecione em &ldquo;Bloquear períodos&rdquo;, todos os dias e períodos nos quais você está indisponível para ter aulas;
+                    - Selecione em &ldquo;Bloquear períodos&rdquo;, todos os dias da semana e períodos nos quais você está indisponível para ter aulas;
                     <br />
-                    - Em &ldquo;Dar preferência por períodos&rdquo;, selecione dias e períodos nos quais você prefere ter aulas, mas sem restrição de disponibilidade.
+                    - Em &ldquo;Dar preferência por períodos&rdquo;, selecione dias da semana e períodos nos quais você prefere ter aulas, mas não possui restrição de disponibilidade.
                 </DialogContentText>
                 <hr />
                 <br />
@@ -113,12 +113,12 @@ const Modal = ({ showModal, setShowModal }) => {
                 <div style={{ display: 'flex', gap: 20 }}>
                     <div style={{ flex: 1, borderRight: '1px solid black' }}>
                         <div style={{ marginBottom: '16px' }}><b>Bloquear períodos</b></div>
-                        <DaySelector day="Segunda" selectedPeriods={selectedPeriodsMon} setSelectedPeriods={setSelectedPeriodsMon} />
-                        <DaySelector day="Terça" selectedPeriods={selectedPeriodsTue} setSelectedPeriods={setSelectedPeriodsTue} />
-                        <DaySelector day="Quarta" selectedPeriods={selectedPeriodsWed} setSelectedPeriods={setSelectedPeriodsWed} />
-                        <DaySelector day="Quinta" selectedPeriods={selectedPeriodsThi} setSelectedPeriods={setSelectedPeriodsThi} />
-                        <DaySelector day="Sexta" selectedPeriods={selectedPeriodsFri} setSelectedPeriods={setSelectedPeriodsFri} />
-                        <DaySelector day="Sábado" selectedPeriods={selectedPeriodsSat} setSelectedPeriods={setSelectedPeriodsSat} />
+                        <DaySelector day="Segunda" blockedPeriods={selectedPeriodsPrefMon} selectedPeriods={selectedPeriodsMon} setSelectedPeriods={setSelectedPeriodsMon} />
+                        <DaySelector day="Terça" blockedPeriods={selectedPeriodsPrefTue} selectedPeriods={selectedPeriodsTue} setSelectedPeriods={setSelectedPeriodsTue} />
+                        <DaySelector day="Quarta" blockedPeriods={selectedPeriodsPrefWed} selectedPeriods={selectedPeriodsWed} setSelectedPeriods={setSelectedPeriodsWed} />
+                        <DaySelector day="Quinta" blockedPeriods={selectedPeriodsPrefThi} selectedPeriods={selectedPeriodsThi} setSelectedPeriods={setSelectedPeriodsThi} />
+                        <DaySelector day="Sexta" blockedPeriods={selectedPeriodsPrefFri} selectedPeriods={selectedPeriodsFri} setSelectedPeriods={setSelectedPeriodsFri} />
+                        <DaySelector day="Sábado" blockedPeriods={selectedPeriodsPrefSat} selectedPeriods={selectedPeriodsSat} setSelectedPeriods={setSelectedPeriodsSat} />
                     </div>
                     <div style={{ flex: 1 }}>
                         <div style={{ marginBottom: '16px' }}><b>Dar preferência por períodos</b></div>
