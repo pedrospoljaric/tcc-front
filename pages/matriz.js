@@ -117,7 +117,7 @@ const Grade = () => {
                         display: 'flex', justifyContent: 'space-between', alignItems: 'center'
                     }}
                     >
-                        <Button variant="contained" color="primary" onClick={openModal}>
+                        <Button variant="outlined" color="primary" onClick={openModal} style={{ marginRight: 10 }}>
                             Preferências
                         </Button>
                         <Modal showModal={showModal} setShowModal={setShowModal} />
