@@ -39,6 +39,7 @@ const Historico = () => {
                         filesLimit={1}
                         showPreviewsInDropzone={false}
                         onAdd={(files) => { setFile(prop('0.file', files)) }}
+                        maxFileSize={30000000}
                     />
                 )
                 : (
