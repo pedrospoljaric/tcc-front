@@ -34,7 +34,7 @@ const Grade = () => {
         setCourses(coursesGotten)
 
         const responseRegisteredCourse = await request.get('/courses/registered')
-        const registeredCourseGotten = prop('data.course', responseRegisteredCourse) || []
+        const registeredCourseGotten = prop('data.course', responseRegisteredCourse)
         if (registeredCourseGotten) setSelectedCourseId(prop('id', registeredCourseGotten))
 
         const responseClasses = await request.get('/semesters/current/classes')
@@ -78,7 +78,7 @@ const Grade = () => {
                         label="Curso"
                         size="small"
                         variant="outlined"
-                        value={selectedCourseId}
+                        value={`${selectedCourseId}`}
                         error={!selectedCourseId}
                         onChange={(event) => setSelectedCourseId(event.target.value)}
                         style={{
