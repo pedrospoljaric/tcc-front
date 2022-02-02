@@ -7,8 +7,6 @@ import { useState, useEffect } from 'react'
 import request from 'utils/request'
 import { prop } from 'lodash/fp'
 import { useRouter } from 'next/dist/client/router'
-import IconButton from '@material-ui/core/IconButton'
-import SettingsIcon from '@material-ui/icons/Settings'
 import Modal from 'components/Modal'
 
 const Grade = () => {
@@ -19,6 +17,7 @@ const Grade = () => {
     const [selectedClasses, setSelectedClasses] = useState([])
     const [showModal, setShowModal] = useState(false)
     const [loadingRecommendation, setLoadingRecommendation] = useState(false)
+    const [saving, setSaving] = useState(false)
 
     const openModal = () => {
         setShowModal((prev) => !prev)
@@ -118,26 +117,29 @@ const Grade = () => {
                         display: 'flex', justifyContent: 'space-between', alignItems: 'center'
                     }}
                     >
-                        <IconButton color="primary" onClick={openModal}>
-                            <SettingsIcon />
-                        </IconButton>
+                        <Button variant="contained" color="primary" onClick={openModal}>
+                            Preferências
+                        </Button>
                         <Modal showModal={showModal} setShowModal={setShowModal} />
 
                         <Button
                             variant="contained"
                             color="primary"
+                            disabled={saving}
                             onClick={async (event) => {
                                 event.preventDefault()
 
+                                setSaving(true)
                                 try {
                                     await request.post('/classes/selected', { classesIds: selectedClasses.map(prop('id')) })
                                     alert('Seleção salva com sucesso')
                                 } catch (err) {
                                     alert('Erro ao salvar seleção')
                                 }
+                                setSaving(false)
                             }}
                         >
-                            Salvar
+                            {saving ? 'Salvando...' : 'Salvar'}
                         </Button>
                     </div>
                 </div>
