@@ -24,6 +24,7 @@ const Inicio = () => (
                 Observações
             </Typography>
             <List dense>
+                <ListItem><ListItemText primary="• Use o navegador Google Chrome ou Microsoft Edge para fazer o download do histórico na INTRANET, históricos baixados pelo Mozilla Firefox apresentaram problemas." /></ListItem>
                 <ListItem><ListItemText primary="• O projeto ainda é um protótipo, podendo apresentar alguns problemas e instabilidades, observações sobre isso também são bem-vindas no formulário." /></ListItem>
                 <ListItem><ListItemText primary={'• Na aba "Amigos", é possível adicionar amigos usando seus usuários da INTRANET. Amigos adicionados com matrizes salvas afetam um pouco a recomendação.'} /></ListItem>
             </List>
