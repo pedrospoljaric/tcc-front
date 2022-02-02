@@ -6,7 +6,7 @@ import request from 'utils/request'
 import { DropzoneAreaBase } from 'material-ui-dropzone'
 import { useRouter } from 'next/dist/client/router'
 
-const Inicio = () => {
+const Historico = () => {
     const router = useRouter()
     const [file, setFile] = useState(null)
 
@@ -59,4 +59,4 @@ const Inicio = () => {
     )
 }
 
-export default Inicio
+export default Historico

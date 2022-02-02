@@ -35,7 +35,7 @@ const Login = () => {
 
                         localStorage.setItem('username', username)
 
-                        router.push('/matriz')
+                        router.push('/inicio')
                     } catch (err) {
                         // eslint-disable-next-line no-alert
                         alert(err)
